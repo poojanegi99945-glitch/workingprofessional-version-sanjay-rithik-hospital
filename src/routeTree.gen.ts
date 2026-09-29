@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProfessionalCareRouteImport } from './routes/professional-care'
 import { Route as ApiAgeTransformRouteImport } from './routes/api.age-transform'
 import { Route as ApiLeadCaptureRouteImport } from './routes/api.lead-capture'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfessionalCareRoute = ProfessionalCareRouteImport.update({
+  id: '/professional-care',
+  path: '/professional-care',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAgeTransformRoute = ApiAgeTransformRouteImport.update({
@@ -31,30 +37,40 @@ const ApiLeadCaptureRoute = ApiLeadCaptureRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/professional-care': typeof ProfessionalCareRoute
   '/api/age-transform': typeof ApiAgeTransformRoute
   '/api/lead-capture': typeof ApiLeadCaptureRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/professional-care': typeof ProfessionalCareRoute
   '/api/age-transform': typeof ApiAgeTransformRoute
   '/api/lead-capture': typeof ApiLeadCaptureRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/professional-care': typeof ProfessionalCareRoute
   '/api/age-transform': typeof ApiAgeTransformRoute
   '/api/lead-capture': typeof ApiLeadCaptureRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/age-transform' | '/api/lead-capture'
+  fullPaths:
+    '/' | '/professional-care' | '/api/age-transform' | '/api/lead-capture'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/age-transform' | '/api/lead-capture'
-  id: '__root__' | '/' | '/api/age-transform' | '/api/lead-capture'
+  to: '/' | '/professional-care' | '/api/age-transform' | '/api/lead-capture'
+  id:
+    | '__root__'
+    | '/'
+    | '/professional-care'
+    | '/api/age-transform'
+    | '/api/lead-capture'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProfessionalCareRoute: typeof ProfessionalCareRoute
   ApiAgeTransformRoute: typeof ApiAgeTransformRoute
   ApiLeadCaptureRoute: typeof ApiLeadCaptureRoute
 }
@@ -66,6 +82,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/professional-care': {
+      id: '/professional-care'
+      path: '/professional-care'
+      fullPath: '/professional-care'
+      preLoaderRoute: typeof ProfessionalCareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/age-transform': {
@@ -87,6 +110,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProfessionalCareRoute: ProfessionalCareRoute,
   ApiAgeTransformRoute: ApiAgeTransformRoute,
   ApiLeadCaptureRoute: ApiLeadCaptureRoute,
 }
