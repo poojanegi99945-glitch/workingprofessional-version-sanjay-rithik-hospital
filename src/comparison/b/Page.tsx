@@ -419,7 +419,7 @@ function TrustStrip() {
           <MapPin className="size-4 shrink-0 text-clay" aria-hidden="true" />
           Sanjay Rithik Hospital, Karur
         </span>
-        <span>19 years experience · 500+ clients</span>
+        <span>19 years experience · 500+ patients</span>
         <a
           href="https://www.google.com/maps/search/?api=1&query=Sanjay+Rithik+Baby+Care+and+Skin+Laser+Cosmetology+Hospital+Karur"
           target="_blank"
@@ -890,7 +890,7 @@ function TreatmentExplorer({
     );
   }
   return (
-    <Section id={sectionId} tone="sand">
+    <Section id={sectionId} tone="sand" className="pc-feature-concerns">
       <Reveal className="max-w-3xl">
         <Eyebrow>Explore by concern</Eyebrow>
         <h2 className="mt-5 text-4xl leading-[1.04] sm:text-5xl">
@@ -901,94 +901,24 @@ function TreatmentExplorer({
         </p>
       </Reveal>
       <Reveal delay={80} className="mt-10">
-        <p className="mb-3 flex items-center gap-2 text-xs text-muted-foreground md:hidden">
-          Swipe to explore concerns <ArrowRight aria-hidden="true" className="size-4" />
-        </p>
-        <div className="treatment-layout grid gap-5 lg:grid-cols-[.72fr_1.28fr]">
-          <div
-            className="flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible"
-            role="tablist"
-            aria-label="Skin and hair concerns"
-          >
-            {TREATMENTS.map((item, index) => (
-              <button
-                key={item.concern}
-                type="button"
-                role="tab"
-                id={`${sectionId}-tab-${index}`}
-                tabIndex={active === index ? 0 : -1}
-                onKeyDown={(event) => {
-                  const offset = ["ArrowRight", "ArrowDown"].includes(event.key) ? 1 : ["ArrowLeft", "ArrowUp"].includes(event.key) ? -1 : 0;
-                  if (!offset && event.key !== "Home" && event.key !== "End") return;
-                  event.preventDefault();
-                  const next = event.key === "Home" ? 0 : event.key === "End" ? TREATMENTS.length - 1 : (index + offset + TREATMENTS.length) % TREATMENTS.length;
-                  setActive(next);
-                  document.getElementById(`${sectionId}-tab-${next}`)?.focus();
-                }}
-                aria-selected={active === index}
-                aria-controls={detailId}
+        <div className="pc-feature-concern-grid">
+          {TREATMENTS.slice(0, 8).map((item, index) => (
+            <article key={item.concern} className="pc-feature-concern-card">
+              <Stethoscope aria-hidden="true" />
+              <h3>{item.concern}</h3>
+              <p>{item.noticing}</p>
+              <a
+                href="#b-skin-check"
                 onClick={() => {
                   setActive(index);
                   track("treatment_explored", { concern: item.concern });
                   track("concern_explored", { concern: item.concern });
                 }}
-                className={cn(
-                  "min-h-12 shrink-0 rounded-2xl border px-5 py-3 text-left text-sm font-medium transition-colors lg:w-full",
-                  active === index
-                    ? "border-ink bg-ink text-ink-foreground"
-                    : "border-border bg-card hover:border-clay",
-                )}
               >
-                {item.concern}
-              </button>
-            ))}
-          </div>
-          <article
-            id={detailId}
-            role="tabpanel"
-            aria-labelledby={`${sectionId}-tab-${active}`}
-            className="rounded-3xl border border-border bg-card p-7 shadow-soft sm:p-10"
-            aria-live="polite"
-          >
-            <p className="eyebrow text-clay">Your selected concern</p>
-            <h3 className="mt-3 text-4xl">{selected.concern}</h3>
-            <TreatmentPhoto concern={selected.concern} />
-            <div className="mt-8 grid gap-6 sm:grid-cols-2">
-              <div>
-                <p className="text-sm font-medium">What you may be noticing</p>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {selected.noticing}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm font-medium">Why this may happen</p>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{selected.why}</p>
-              </div>
-            </div>
-            <div className="mt-8 border-t border-border pt-7">
-              <p className="text-sm font-medium">Options a dermatologist may discuss</p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {selected.options.map((option) => (
-                  <span key={option} className="rounded-full bg-sand px-4 py-2 text-xs">
-                    {option}
-                  </span>
-                ))}
-              </div>
-              <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-                Suitability, experience and downtime depend on professional assessment and
-                individual factors. Costs and expected recovery are discussed during consultation.
-              </p>
-            </div>
-            <Button variant="ink" size="xl" className="mt-7" asChild>
-              <TrackedLink
-                href="#b-consultation"
-                event="booking_form_started"
-                source={`treatment:${selected.concern}`}
-              >
-                Discuss My Concern <ArrowRight />
-              </TrackedLink>
-            </Button>
-          </article>
+                Explore this concern <ArrowRight aria-hidden="true" />
+              </a>
+            </article>
+          ))}
         </div>
       </Reveal>
     </Section>
@@ -1185,7 +1115,7 @@ function Doctor() {
             <p className="mt-6 text-center text-xs leading-relaxed text-muted-foreground">
               Official portrait supplied by the clinic.
               <br />
-              Credentials and registration: [NEEDS VERIFIED CLINIC DATA]
+              Dermatology consultation details can be confirmed directly with the clinic.
             </p>
           </div>
         </Reveal>
@@ -1199,7 +1129,7 @@ function CinematicInterlude() {
     {
       label: "Anti-aging treatment options",
       src: antiAgingReelVideo,
-      caption: "From the clinic's Instagram — not every concern needs the same treatment.",
+      caption: "Clinic education video - not every concern needs the same treatment.",
     },
   ];
   const [activeVideo, setActiveVideo] = useState(0);

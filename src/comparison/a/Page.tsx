@@ -474,7 +474,7 @@ function TrustStrip() {
           <MapPin className="size-4 shrink-0 text-clay" aria-hidden="true" />
           Sanjay Rithik Hospital, Karur
         </span>
-        <span>19 years experience · 500+ clients</span>
+        <span>19 years experience · 500+ patients</span>
         <a
           href={MAPS}
           target="_blank"
@@ -580,7 +580,7 @@ function CinematicInterlude() {
     {
       label: "Anti-aging treatment options",
       src: antiAgingReelVideo,
-      caption: "From the clinic's Instagram — not every concern needs the same treatment.",
+      caption: "Clinic education video - not every concern needs the same treatment.",
     },
   ];
   const [activeVideo, setActiveVideo] = useState(0);
